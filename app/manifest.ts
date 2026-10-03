@@ -1,2 +1,2 @@
 import type { MetadataRoute } from "next";
-export default function manifest(): MetadataRoute.Manifest { return { name: "Hasn Al Wadi Flour Mill LLC", short_name: "Hasn Al Wadi", start_url: "/", display: "standalone", background_color: "#faf8f2", theme_color: "#1f5d3a", icons: [{ src: "/icon.svg", sizes: "any", type: "image/svg+xml", purpose: "any" }] }; }
+export default function manifest(): MetadataRoute.Manifest { return { name: "Hasn Al Wadi Flour Mill LLC", short_name: "Hasn Al Wadi", start_url: "/", display: "standalone", background_color: "#fffdfa", theme_color: "#173b2b", icons: [{ src: "/app-icon-192.png", sizes: "192x192", type: "image/png", purpose: "any" }, { src: "/app-icon-512.png", sizes: "512x512", type: "image/png", purpose: "any" }] }; }
