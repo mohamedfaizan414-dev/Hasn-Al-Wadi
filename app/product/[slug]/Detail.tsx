@@ -1,0 +1,13 @@
+"use client";
+import Link from "next/link";
+import { useState } from "react";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useCart } from "@/lib/cart";
+import { catName, fmt, type Product } from "@/lib/data";
+import { Icon } from "@/components/Ui";
+export default function Detail({ p }: { p: Product }) {
+  const [vid, setVid] = useState(p.variants[0].id); const [q, setQ] = useState(1); const [toast, setToast] = useState(false); const { addItem } = useCart(); const r = useRouter(); const v = p.variants.find(x => x.id === vid)!; const out = v.stockStatus !== "IN_STOCK";
+  const add = () => { addItem(p.id, vid, q); setToast(true); setTimeout(() => setToast(false), 1500); };
+  return <div className="detail-page"><p className="detail-breadcrumb"><Link href="/products">Shop</Link> <span> / </span> <Link href={`/products?cat=${p.category}`}>{catName(p.category)}</Link> <span> / </span> {p.name}</p><div className="detail-layout"><div className="detail-gallery"><Image src={p.image} alt={`${p.name} pack`} fill priority sizes="(max-width:767px) 100vw, 560px" placeholder="blur" blurDataURL={p.blur}/></div><div className="detail-info"><p className="eyebrow">{catName(p.category)}</p><h1>{p.name}</h1><div className="detail-highlights">{p.highlights.map(h => <span key={h}>{h}</span>)}</div><p className="detail-price">{v.price == null ? "Price confirmed with your order" : fmt(v.price * q)}</p><p className="description">{p.description}</p><div className="detail-use"><h2>Use & storage</h2><p>{p.usage}</p></div><div><p className="detail-label">Pack size</p><div role="radiogroup" aria-label="Pack size" className="flex flex-wrap gap-2">{p.variants.map(x => <button key={x.id} role="radio" aria-checked={vid === x.id} onClick={() => setVid(x.id)} className={`btn ${vid === x.id ? "btn-p" : "btn-s"}`}>{x.name}</button>)}</div></div><div className="detail-actions"><div className="detail-quantity"><button aria-label="Decrease quantity" onClick={() => setQ(Math.max(1, q - 1))}><Icon name="minus" size={16}/></button><span>{q}</span><button aria-label="Increase quantity" onClick={() => setQ(q + 1)}><Icon name="plus" size={16}/></button></div><button className="btn btn-s" disabled={out} onClick={add}>Add to basket</button><button className="btn btn-p" disabled={out} onClick={() => { addItem(p.id, vid, q); r.push("/checkout"); }}>Buy now</button></div></div></div>{toast && <div role="status" className="fixed top-16 left-1/2 -translate-x-1/2 z-50 bg-ink text-white rounded-xl px-4 py-2 flex items-center gap-2"><Icon name="check" size={16}/>Added to basket</div>}</div>;
+}
